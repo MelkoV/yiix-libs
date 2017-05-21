@@ -1,0 +1,27 @@
+{
+  "name": "melkov/yiix-libs",
+  "description": "Libs for YiiX CMS",
+  "authors": [
+    {
+      "name": "AntonSmorodin",
+      "email": "anton@smorodin.me"
+    }
+  ],
+  "type": "yii2-extension",
+  "keywords": [
+    "yii2",
+    "extension"
+  ],
+  "license": "MIT",
+  "require": {
+    "melkov/yii2-tools": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "yiix\\": ""
+    }
+  },
+  "extra": {
+    "bootstrap": "yiix\\Bootstrap"
+  }
+}
