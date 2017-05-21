@@ -269,7 +269,7 @@ class TransferController extends Controller
         $transaction->commit();
     }
 
-    
+
 
     /**
      * @param $data
