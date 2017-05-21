@@ -19,7 +19,7 @@ class Bootstrap implements BootstrapInterface
         /**
          * @var Module $gii
          */
-        \Yii::setAlias('@yiix', '@vendor/melkov/yiix-tools');
+        \Yii::setAlias('@yiix', '@vendor/melkov/yiix-libs');
 
     }
 }
