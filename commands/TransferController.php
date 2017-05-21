@@ -21,6 +21,10 @@ class TransferController extends Controller
     private $tvType = [];
     private $parents = [];
 
+
+    /**
+     * Transfer DB data from ModX Evo to YiiX
+     */
     public function actionEvo()
     {
         echo "\nStart transfer from ModX Evo to YiiX\n";
@@ -260,13 +264,12 @@ class TransferController extends Controller
         }
         echo " OK\n";
 
+        $this->loadCustomTables();
+
         $transaction->commit();
     }
 
-    public function actionTest()
-    {
-
-    }
+    
 
     /**
      * @param $data
@@ -287,6 +290,76 @@ class TransferController extends Controller
             $newData[$k] = $v;
         }
         return $newData;
+    }
+
+    private function loadCustomTables()
+    {
+        echo "\nStart custom tables...\n\n";
+        $exclude = ["active_users", "active_user_locks", "active_user_sessions", "categories", "documentgroup_names",
+            "document_groups", "event_log", "keyword_xref", "manager_log", "manager_users", "membergroup_access",
+            "membergroup_names", "member_groups", "site_content", "site_content_metatags", "site_htmlsnippets",
+            "site_keywords", "site_metatags", "site_modules", "site_module_access", "site_module_depobj",
+            "site_plugins", "site_plugin_events", "site_snippets", "site_templates", "site_tmplvars", "site_tmplvar_access",
+            "site_tmplvar_contentvalues", "site_tmplvar_templates", "system_eventnames", "system_settings", "user_attributes",
+            "user_messages", "user_roles", "user_settings", "webgroup_access", "webgroup_names", "web_groups",
+            "web_users", "web_user_attributes", "web_user_settings"];
+        $tableOptions = null;
+        if (\Yii::$app->db->driverName === 'mysql') {
+            // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
+            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
+        }
+        foreach (\Yii::$app->dbModx->getSchema()->tableNames as $tableName) {
+            $fullTableName = $tableName;
+            if (\Yii::$app->dbModx->tablePrefix) {
+                if (strpos($tableName, \Yii::$app->dbModx->tablePrefix) === 0) {
+                    $tableName = substr($tableName, strlen(\Yii::$app->dbModx->tablePrefix));
+                } else {
+                    continue;
+                }
+            }
+            if (in_array($tableName, $exclude)) {
+                continue;
+            }
+            echo $tableName . "... ";
+            $columns = [];
+            $pkLoad = false;
+            $schema = \Yii::$app->dbModx->getTableSchema($fullTableName);
+
+            foreach ($schema->columns as $name => $column) {
+                if ($column->autoIncrement && $column->isPrimaryKey) {
+                    $type = "pk";
+                    $pkLoad = true;
+                } else {
+                    $type = $column->type;
+                    // fixme fix for easy2_comments ip_address
+                    if ($type == "char") {
+                        $type = "char(16)";
+                    }
+                    if (!$column->allowNull) {
+                        $type .= " NOT NULL";
+                    }
+                    if ($column->defaultValue) {
+                        // fixme fix for easy2_comments dates
+                        if ($column->type != "datetime") {
+                            $val = $column->defaultValue;
+                            if ($column->phpType == "string") {
+                                $val = "'" . $val . "'";
+                            }
+                            $type .= " DEFAULT " . $val;
+                        }
+                    }
+                }
+                $columns[$name] = $type;
+            }
+            \Yii::$app->db->createCommand()->createTable("{{%".$tableName."}}", $columns, $tableOptions)->execute();
+            if ($schema->primaryKey && !$pkLoad) {
+                \Yii::$app->db->createCommand()->addPrimaryKey($tableName, "{{%".$tableName."}}", $schema->primaryKey);
+            }
+            foreach (\Yii::$app->dbModx->createCommand("SELECT * FROM {{%".$tableName."}}")->queryAll() as $record) {
+                \Yii::$app->db->createCommand()->insert("{{%".$tableName."}}", $record)->execute();
+            }
+            echo "OK\n";
+        }
     }
 
 }
