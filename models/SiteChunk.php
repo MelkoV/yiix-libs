@@ -2,6 +2,7 @@
 
 namespace yiix\models;
 
+use common\components\App;
 use Yii;
 use \yiix\models\base\SiteChunk as BaseSiteChunk;
 
@@ -28,7 +29,7 @@ class SiteChunk extends BaseSiteChunk
     public function attributeDescriptions()
     {
         return [
-
+            "name" => "<b>". App::getAdapter()->getChunkName($this->name) . "</b><br />Название чанка",
         ];
     }
 

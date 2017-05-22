@@ -32,4 +32,11 @@ class SiteTemplateVarQuery extends \yii\db\ActiveQuery
     {
         return parent::one($db);
     }
+
+    public function forTemplate($id)
+    {
+        $this->innerJoin("{{%site_template_var_template}} vt", "vt.template_var_id = [[id]]");
+        $this->andWhere("vt.template_id = :id", ["id" => $id]);
+        return $this;
+    }
 }

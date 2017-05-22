@@ -9,7 +9,7 @@ class BackendForm extends ActiveForm
 
     public $fieldClass = 'yiix\widgets\BackendActiveField';
 
-    public static function begin($config = [])
+    public static function begin($config = [], $modelName = "")
     {
         if (!isset($config["options"])) {
             $config["options"] = [];
@@ -18,6 +18,8 @@ class BackendForm extends ActiveForm
             $config["options"]["class"] = "";
         }
         $config["options"]["class"] = trim($config["options"]["class"] . " yiix-form");
+        $model = explode("\\", $modelName);
+        $config["options"]["data-model"] = strtolower(array_pop($model));
         return parent::begin($config);
     }
 

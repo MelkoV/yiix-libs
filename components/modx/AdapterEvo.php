@@ -12,4 +12,14 @@ class AdapterEvo extends Adapter
         return "[*".$name."*]";
     }
 
+    public function getSnippetName($name)
+    {
+        return "[[".$name."]]";
+    }
+
+    public function getChunkName($name)
+    {
+        return "{{".$name."}}";
+    }
+
 }

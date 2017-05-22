@@ -2,6 +2,7 @@
 
 namespace yiix\models;
 
+use common\components\App;
 use Yii;
 use \yiix\models\base\SiteSnippet as BaseSiteSnippet;
 
@@ -28,7 +29,7 @@ class SiteSnippet extends BaseSiteSnippet
     public function attributeDescriptions()
     {
         return [
-
+            "name" => "<b>". App::getAdapter()->getSnippetName($this->name) . "</b><br />Название сниппета",
         ];
     }
 

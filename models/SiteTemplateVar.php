@@ -2,6 +2,8 @@
 
 namespace yiix\models;
 
+use common\components\App;
+use common\models\SiteTemplateVarContent as CommonVarContent;
 use Yii;
 use \yiix\models\base\SiteTemplateVar as BaseSiteTemplateVar;
 
@@ -28,8 +30,19 @@ class SiteTemplateVar extends BaseSiteTemplateVar
     public function attributeDescriptions()
     {
         return [
-
+            "caption" => "<b>Заголовок</b><br />Будет отображаться в списке TV документа",
+            "name" => "<b>". App::getAdapter()->getResourceField($this->name) . "</b><br />Название параметра",
         ];
+    }
+
+    /**
+     * @param $id
+     * @return string
+     */
+    public function getValueForContent($id)
+    {
+        $value = CommonVarContent::find()->where(["content_id" => $id, "template_var_id" => $this->id])->one();
+        return $value ? $value->value : $this->default_text;
     }
 
 }
