@@ -13,10 +13,13 @@ use \yiix\models\base\SiteTemplateVar as BaseSiteTemplateVar;
 class SiteTemplateVar extends BaseSiteTemplateVar
 {
 
+    public $value = null;
+    public $type_name = null;
+
     public function rules()
     {
         return array_merge(parent::rules(), [
-
+            [["value", "type_name"], "safe"],
         ]);
     }
 
@@ -31,7 +34,7 @@ class SiteTemplateVar extends BaseSiteTemplateVar
     {
         return [
             "caption" => "<b>Заголовок</b><br />Будет отображаться в списке TV документа",
-            "name" => "<b>". App::getAdapter()->getResourceField($this->name) . "</b><br />Название параметра",
+            "name" => "<b>". App::modx()->getAdapter()->getResourceField($this->name) . "</b><br />Название параметра",
         ];
     }
 

@@ -29,7 +29,7 @@ class SiteChunk extends BaseSiteChunk
     public function attributeDescriptions()
     {
         return [
-            "name" => "<b>". App::getAdapter()->getChunkName($this->name) . "</b><br />Название чанка",
+            "name" => "<b>". App::modx()->getAdapter()->getChunkName($this->name) . "</b><br />Название чанка",
         ];
     }
 

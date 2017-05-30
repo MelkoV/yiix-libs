@@ -22,4 +22,9 @@ class AdapterEvo extends Adapter
         return "{{".$name."}}";
     }
 
+    public function mapSettingName($name)
+    {
+        return $name;
+    }
+
 }

@@ -15,6 +15,16 @@ class SiteTemplateVarContentQuery extends \yii\db\ActiveQuery
         return $this;
     }*/
 
+    public function forContent($contentId, $name)
+    {
+        $name = is_array($name) ? $name : [$name];
+        $this->select("{{%site_template_var_content}}.*, {{%site_template_var}}.name");
+        $this->innerJoin("{{%site_template_var}}", "{{%site_template_var}}.id = template_var_id");
+        $this->andWhere(["{{%site_template_var}}.name" => $name]);
+        $this->andWhere(["content_id" => $contentId]);
+        return $this;
+    }
+
     /**
      * @inheritdoc
      * @return \common\models\SiteTemplateVarContent[]|array

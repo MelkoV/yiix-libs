@@ -29,7 +29,7 @@ class SiteSnippet extends BaseSiteSnippet
     public function attributeDescriptions()
     {
         return [
-            "name" => "<b>". App::getAdapter()->getSnippetName($this->name) . "</b><br />Название сниппета",
+            "name" => "<b>". App::modx()->getAdapter()->getSnippetName($this->name) . "</b><br />Название сниппета",
         ];
     }
 

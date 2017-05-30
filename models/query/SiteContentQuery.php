@@ -24,6 +24,42 @@ class SiteContentQuery extends \yii\db\ActiveQuery
         return parent::all($db);
     }
 
+    public function active()
+    {
+        return $this->published()->deleted();
+    }
+
+    public function published($published = true)
+    {
+        if ($published === null) {
+            return $this;
+        }
+        $time = time();
+        if ($published) {
+            $this->andWhere("[[published]] = :published OR ([[pub_date]] > 0 AND [[pub_date]] < :time)",
+                ["published" => $published, "time" => $time]);
+            $this->andWhere("[[un_pub_date]] = 0 OR [[un_pub_date]] > :time", ["time" => $time]);
+        } else {
+            $this->andWhere("[[published]] = :published OR ([[pub_date]] > 0 AND [[pub_date]] > :time) 
+                OR ([[un_pub_date]] > 0 AND [[un_pub_date]] < :time)",
+                ["published" => $published, "time" => $time]);
+        }
+        return $this;
+    }
+
+    /**
+     * @param bool $deleted
+     * @return $this
+     */
+    public function deleted($deleted = false)
+    {
+        if ($deleted === null) {
+            return $this;
+        }
+        $this->andWhere(["deleted" => $deleted]);
+        return $this;
+    }
+
     /**
      * @inheritdoc
      * @return \common\models\SiteContent|array|null

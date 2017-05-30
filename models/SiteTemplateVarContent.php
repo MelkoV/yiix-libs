@@ -11,10 +11,12 @@ use \yiix\models\base\SiteTemplateVarContent as BaseSiteTemplateVarContent;
 class SiteTemplateVarContent extends BaseSiteTemplateVarContent
 {
 
+    public $name;
+
     public function rules()
     {
         return array_merge(parent::rules(), [
-
+            ["name", "safe"],
         ]);
     }
 
