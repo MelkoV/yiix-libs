@@ -2,7 +2,7 @@
 
 namespace yiix\components\modx\base;
 
-use melkov\components\helpers\ArrayHelper;
+use melkov\helpers\ArrayHelper;
 
 abstract class Adapter
 {

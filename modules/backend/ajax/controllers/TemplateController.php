@@ -4,7 +4,7 @@ namespace yiix\modules\backend\ajax\controllers;
 
 use backend\components\Controller;
 use common\models\SiteTemplate;
-use melkov\components\CurrentUser;
+use melkov\CurrentUser;
 
 class TemplateController extends Controller
 {

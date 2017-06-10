@@ -2,7 +2,7 @@
 
 namespace yiix\components;
 
-class App extends \melkov\components\App
+class App extends \melkov\App
 {
     const ROLE_PUBLISHER = "publisher";
     const ROLE_EDITOR = "editor";

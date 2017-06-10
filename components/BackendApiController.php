@@ -2,7 +2,7 @@
 
 namespace yiix\components;
 
-use melkov\components\controllers\ApiController;
+use melkov\controllers\ApiController;
 
 class BackendApiController extends ApiController
 {

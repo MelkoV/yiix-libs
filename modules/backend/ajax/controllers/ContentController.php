@@ -5,7 +5,7 @@ namespace yiix\modules\backend\ajax\controllers;
 use backend\components\Controller;
 use common\models\SiteContent;
 use common\models\SiteTemplateVarContent;
-use melkov\components\CurrentUser;
+use melkov\CurrentUser;
 
 class ContentController extends Controller
 {
